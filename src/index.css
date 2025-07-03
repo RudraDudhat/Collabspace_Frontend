@@ -153,7 +153,7 @@
   }
 
   .card-hover {
-    @apply card hover:border-[var(--border-hover)] hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1;
+    @apply bg-[var(--card-bg)] border border-[var(--border-color)] rounded-xl p-6 shadow-lg backdrop-blur-sm hover:border-[var(--border-hover)] hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1;
   }
 
   .card-compact {
@@ -161,7 +161,7 @@
   }
 
   .card-elevated {
-    @apply card bg-[var(--surface-elevated)] shadow-xl;
+    @apply bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl p-6 shadow-xl backdrop-blur-sm;
   }
 
   /* Enhanced Input System */
