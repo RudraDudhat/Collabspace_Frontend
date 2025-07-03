@@ -12,8 +12,10 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   HashtagIcon,
-  UserGroupIcon
+  UserGroupIcon,
+  Bars3Icon
 } from '@heroicons/react/24/outline';
+import { Avatar, Badge, Button, Tooltip } from '../ui';
 
 const Sidebar = ({ collapsed, onToggle }) => {
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
 
   const navigationItems = [
     { name: 'Dashboard', icon: HomeIcon, path: '/dashboard', badge: null },
-    { name: 'Channels', icon: ChatBubbleLeftRightIcon, path: '/channels', badge: 3 },
+    { name: 'Chat', icon: ChatBubbleLeftRightIcon, path: '/chat', badge: 3 },
     { name: 'Tasks', icon: CheckCircleIcon, path: '/tasks', badge: 5 },
     { name: 'Files', icon: DocumentIcon, path: '/files', badge: null },
     { name: 'Notifications', icon: BellIcon, path: '/notifications', badge: 2 },
@@ -54,23 +56,31 @@ const Sidebar = ({ collapsed, onToggle }) => {
         fixed lg:static inset-y-0 left-0 z-50 
         ${collapsed ? '-translate-x-full lg:translate-x-0' : 'translate-x-0'}
         ${collapsed ? 'lg:w-16' : 'w-64 lg:w-64'}
-        bg-[#1a1a1a] border-r border-[#333333] transition-all duration-300 ease-in-out
+        bg-[var(--secondary-bg)] border-r border-[var(--border-color)] transition-all duration-300 ease-in-out
         flex flex-col h-screen
       `}>
         
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-[#333333]">
-          {!collapsed && (
+        <div className="p-4 border-b border-[var(--border-color)]">
+          {!collapsed ? (
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">Workspace</h2>
-              <button
+              <h2 className="text-lg font-semibold text-[var(--text-primary)]">Workspace</h2>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={onToggle}
-                className="p-1 hover:bg-[#242424] rounded-md transition-colors duration-200 lg:hidden"
-              >
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+                className="lg:hidden"
+                icon={Bars3Icon}
+              />
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onToggle}
+                icon={Bars3Icon}
+              />
             </div>
           )}
         </div>
@@ -78,82 +88,99 @@ const Sidebar = ({ collapsed, onToggle }) => {
         {/* Navigation */}
         <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
           {navigationItems.map((item) => (
-            <button
+            <Tooltip
               key={item.name}
-              onClick={() => navigate(item.path)}
-              className={`
-                w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200
-                ${isActive(item.path) 
-                  ? 'bg-gradient-to-r from-teal-500/20 to-teal-600/20 text-white border-r-2 border-teal-500' 
-                  : 'text-gray-300 hover:text-white hover:bg-[#242424]'
-                }
-              `}
-              title={collapsed ? item.name : ''}
+              content={collapsed ? item.name : ''}
+              position="right"
+              disabled={!collapsed}
             >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
-              {!collapsed && (
-                <>
-                  <span className="flex-1 text-left">{item.name}</span>
-                  {item.badge && (
-                    <span className="bg-teal-500 text-white text-xs px-2 py-1 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                </>
-              )}
-            </button>
+              <button
+                onClick={() => navigate(item.path)}
+                className={`
+                  w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200
+                  ${isActive(item.path) 
+                    ? 'bg-[var(--brand-primary)]/10 text-[var(--text-primary)] border border-[var(--brand-primary)]/20' 
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--tertiary-bg)]'
+                  }
+                `}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                {!collapsed && (
+                  <>
+                    <span className="flex-1 text-left font-medium">{item.name}</span>
+                    {item.badge && (
+                      <Badge variant="primary" className="text-xs">
+                        {item.badge}
+                      </Badge>
+                    )}
+                  </>
+                )}
+              </button>
+            </Tooltip>
           ))}
         </nav>
 
         {/* Teams Section */}
-        <div className="border-t border-[#333333] p-4">
+        <div className="border-t border-[var(--border-color)] p-4">
           {!collapsed && (
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Teams</h3>
-              <button className="p-1 hover:bg-[#242424] rounded-md transition-colors duration-200">
-                <PlusIcon className="w-4 h-4 text-gray-400 hover:text-white" />
-              </button>
+              <h3 className="text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wider">Teams</h3>
+              <Tooltip content="Create Team">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={PlusIcon}
+                  className="p-1"
+                />
+              </Tooltip>
             </div>
           )}
 
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {teams?.map((team) => (
               <div key={team._id} className="space-y-1">
-                <button
-                  onClick={() => {
-                    if (collapsed) {
-                      navigate(`/teams/${team._id}`);
-                    } else {
-                      toggleTeamExpansion(team._id);
-                    }
-                  }}
-                  className={`
-                    w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200
-                    ${location.pathname.includes(`/teams/${team._id}`)
-                      ? 'bg-gradient-to-r from-teal-500/20 to-teal-600/20 text-white'
-                      : 'text-gray-300 hover:text-white hover:bg-[#242424]'
-                    }
-                  `}
-                  title={collapsed ? team.name : ''}
+                <Tooltip
+                  content={collapsed ? team.name : ''}
+                  position="right"
+                  disabled={!collapsed}
                 >
-                  <div className="w-6 h-6 bg-gradient-to-r from-teal-500 to-teal-600 rounded-md flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
-                    {team.name[0]?.toUpperCase()}
-                  </div>
-                  {!collapsed && (
-                    <>
-                      <span className="flex-1 text-left truncate">{team.name}</span>
-                      {team.channels?.length > 0 && (
-                        <div className="flex-shrink-0">
-                          {expandedTeams[team._id] ? (
-                            <ChevronDownIcon className="w-4 h-4" />
-                          ) : (
-                            <ChevronRightIcon className="w-4 h-4" />
-                          )}
-                        </div>
-                      )}
-                    </>
-                  )}
-                </button>
+                  <button
+                    onClick={() => {
+                      if (collapsed) {
+                        navigate(`/teams/${team._id}`);
+                      } else {
+                        toggleTeamExpansion(team._id);
+                      }
+                    }}
+                    className={`
+                      w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200
+                      ${location.pathname.includes(`/teams/${team._id}`)
+                        ? 'bg-[var(--brand-primary)]/10 text-[var(--text-primary)] border border-[var(--brand-primary)]/20'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--tertiary-bg)]'
+                      }
+                    `}
+                  >
+                    <Avatar
+                      size="sm"
+                      fallback={team.name[0]?.toUpperCase()}
+                      className="flex-shrink-0"
+                    />
+                    {!collapsed && (
+                      <>
+                        <span className="flex-1 text-left truncate font-medium">{team.name}</span>
+                        {team.channels?.length > 0 && (
+                          <div className="flex-shrink-0">
+                            {expandedTeams[team._id] ? (
+                              <ChevronDownIcon className="w-4 h-4" />
+                            ) : (
+                              <ChevronRightIcon className="w-4 h-4" />
+                            )}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </button>
+                </Tooltip>
 
                 {/* Team Channels */}
                 {!collapsed && expandedTeams[team._id] && team.channels?.length > 0 && (
@@ -162,14 +189,14 @@ const Sidebar = ({ collapsed, onToggle }) => {
                       <button
                         key={channel._id}
                         onClick={() => navigate(`/teams/${team._id}/channels/${channel._id}`)}
-                        className="w-full flex items-center space-x-2 px-3 py-1 rounded-md text-sm text-gray-400 hover:text-white hover:bg-[#242424] transition-colors duration-200"
+                        className="w-full flex items-center space-x-2 px-3 py-1.5 rounded-md text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--tertiary-bg)] transition-colors duration-200"
                       >
                         <HashtagIcon className="w-4 h-4" />
                         <span className="truncate">{channel.name}</span>
                         {channel.unreadCount > 0 && (
-                          <span className="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                          <Badge variant="error" className="text-xs">
                             {channel.unreadCount}
-                          </span>
+                          </Badge>
                         )}
                       </button>
                     ))}
@@ -181,32 +208,37 @@ const Sidebar = ({ collapsed, onToggle }) => {
             {/* Empty State */}
             {(!teams || teams.length === 0) && !collapsed && (
               <div className="text-center py-8">
-                <UserGroupIcon className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                <p className="text-sm text-gray-400 mb-3">No teams yet</p>
-                <button className="btn-primary text-xs px-3 py-1">
+                <UserGroupIcon className="w-12 h-12 text-[var(--text-subtle)] mx-auto mb-3" />
+                <p className="text-sm text-[var(--text-muted)] mb-3">No teams yet</p>
+                <Button size="sm">
                   Create Team
-                </button>
+                </Button>
               </div>
             )}
           </div>
         </div>
 
         {/* Collapse Toggle (Desktop) */}
-        <div className="hidden lg:block border-t border-[#333333] p-4">
-          <button
-            onClick={onToggle}
-            className="w-full flex items-center justify-center p-2 hover:bg-[#242424] rounded-lg transition-colors duration-200"
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        <div className="hidden lg:block border-t border-[var(--border-color)] p-4">
+          <Tooltip
+            content={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            position="right"
           >
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
+            <Button
+              variant="ghost"
+              onClick={onToggle}
+              className="w-full flex items-center justify-center"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+              <svg 
+                className={`w-5 h-5 text-[var(--text-muted)] transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </Button>
+          </Tooltip>
         </div>
       </aside>
     </>
