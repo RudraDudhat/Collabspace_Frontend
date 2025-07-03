@@ -1,1 +1,2 @@
-@import "tailwindcss";
+/* Removed @import "tailwindcss"; to prevent duplicate imports */
+/* Tailwind CSS is already imported in src/index.css */
