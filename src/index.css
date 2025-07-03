@@ -115,23 +115,27 @@
 
   /* Enhanced Button System */
   .btn-primary {
-    @apply btn bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-white px-4 py-2.5 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 focus:ring-[var(--brand-primary)];
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--primary-bg)] disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-white px-4 py-2.5 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 focus:ring-[var(--brand-primary)];
+    border-radius: var(--radius-md);
   }
 
   .btn-secondary {
-    @apply btn bg-[var(--tertiary-bg)] hover:bg-[var(--surface-elevated)] text-[var(--text-primary)] px-4 py-2.5 border border-[var(--border-color)] hover:border-[var(--border-hover)] focus:ring-[var(--brand-primary)];
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--primary-bg)] disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--tertiary-bg)] hover:bg-[var(--surface-elevated)] text-[var(--text-primary)] px-4 py-2.5 border border-[var(--border-color)] hover:border-[var(--border-hover)] focus:ring-[var(--brand-primary)];
+    border-radius: var(--radius-md);
   }
 
   .btn-ghost {
-    @apply btn text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--tertiary-bg)] px-3 py-2 focus:ring-[var(--brand-primary)];
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--primary-bg)] disabled:opacity-50 disabled:cursor-not-allowed text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--tertiary-bg)] px-3 py-2 focus:ring-[var(--brand-primary)];
+    border-radius: var(--radius-md);
   }
 
   .btn-danger {
-    @apply btn bg-[var(--error)] hover:bg-red-600 text-white px-4 py-2.5 shadow-md hover:shadow-lg focus:ring-[var(--error)];
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--primary-bg)] disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--error)] hover:bg-red-600 text-white px-4 py-2.5 shadow-md hover:shadow-lg focus:ring-[var(--error)];
+    border-radius: var(--radius-md);
   }
 
   .btn-icon {
-    @apply btn p-2.5 hover:bg-[var(--tertiary-bg)] focus:ring-[var(--brand-primary)];
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--primary-bg)] disabled:opacity-50 disabled:cursor-not-allowed p-2.5 hover:bg-[var(--tertiary-bg)] focus:ring-[var(--brand-primary)];
     border-radius: var(--radius-md);
   }
 
